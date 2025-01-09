@@ -63,7 +63,7 @@ public class NewMain {
         endMin = readMin();
 
         //display time
-        System.out.printf("Start Time = %02d:%02d, ",startHr,startMin);
+        System.out.printf("\nStart Time = %02d:%02d, ",startHr,startMin);
         System.out.printf("End Time = %02d:%02d ",endHr,endMin);
 
         //calculate duration between them. start - end (in seconds)
