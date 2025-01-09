@@ -10,9 +10,16 @@ public class NewMain {
         while(true)
         {
             System.out.println("Enter Hour Digit (0-23) = ");
-            hr = sc.nextInt();
-            if(hr>23 || hr<0) System.out.println("Invalid Hour");
-            else break;
+            try{
+                hr = sc.nextInt();
+                if(hr>23 || hr<0) System.out.println("Invalid Hour");
+                else break;
+            }
+            catch(Exception e)
+            {
+                System.out.println("Invalid Hour");
+                sc.nextLine();
+            }
         }
         return hr;
     }
@@ -23,9 +30,16 @@ public class NewMain {
         while(true)
         {
             System.out.println("Enter minute Digit (0-59) = ");
-            min = sc.nextInt();
-            if(min>59 || min<0) System.out.println("Invalid Minute");
-            else break;
+            try{
+                min = sc.nextInt();
+                if(min>59 || min<0) System.out.println("Invalid Minute");
+                else break;
+            }
+            catch(Exception e)
+            {
+                System.out.println("Invalid Minute");
+                sc.nextLine();
+            }
         }
         return min;
     }
