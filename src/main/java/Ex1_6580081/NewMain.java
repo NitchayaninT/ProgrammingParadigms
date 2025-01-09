@@ -7,16 +7,14 @@ public class NewMain {
     {
         Scanner sc = new Scanner(System.in);
         int hr;
-        while(true)
-        {
+        while(true){
             System.out.println("Enter Hour Digit (0-23) = ");
             try{
                 hr = sc.nextInt();
                 if(hr>23 || hr<0) System.out.println("Invalid Hour");
                 else break;
             }
-            catch(Exception e)
-            {
+            catch(Exception e){
                 System.out.println("Invalid Hour");
                 sc.nextLine();
             }
@@ -27,16 +25,14 @@ public class NewMain {
     {
         Scanner sc = new Scanner(System.in);
         int min;
-        while(true)
-        {
+        while(true){
             System.out.println("Enter minute Digit (0-59) = ");
             try{
                 min = sc.nextInt();
                 if(min>59 || min<0) System.out.println("Invalid Minute");
                 else break;
             }
-            catch(Exception e)
-            {
+            catch(Exception e){
                 System.out.println("Invalid Minute");
                 sc.nextLine();
             }
@@ -52,7 +48,6 @@ public class NewMain {
             System.out.println("(tomorrow)");
         }
         else System.out.println("(today)");
-
         System.out.println("Duration = "+diff/3600+" hours, "+(diff-((diff/3600)*3600))/60+" minutes");
     }
     public static void main(String[] args)
