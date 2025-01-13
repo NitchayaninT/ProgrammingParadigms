@@ -15,7 +15,7 @@ public class NewMain {
                 else break;
             }
             catch(Exception e){
-                System.out.println("Invalid Hour");
+                System.out.println("Invalid Hour ");
                 sc.nextLine();
             }
         }
