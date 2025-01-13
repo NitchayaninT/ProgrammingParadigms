@@ -8,7 +8,7 @@ public class NewMain {
         Scanner sc = new Scanner(System.in);
         int hr;
         while(true){
-            System.out.println("Enter Hour Digito (0-23) = ");
+            System.out.println("Enter Hour Digit (0-23) = ");
             try{
                 hr = sc.nextInt();
                 if(hr>23 || hr<0) System.out.println("Invalid Hour");
