@@ -53,7 +53,7 @@ public class NewMain {
                 String moreThanThreshold = "no";
                 if(MAU > threshold) moreThanThreshold = "yes";
 
-                //write to file in : platform, MAU(thousands), MAU(billions), >500 millions (yes/no) format
+                //write to file in : platform, MAU(thousands), MAU(billions), >threshold millions (yes/no) format
                 writeFile.printf("%-15s%,13d%19.3f%16s%-3s\r\n",platform,thousands,billions," ",moreThanThreshold);
                 linesCount++;
             }
