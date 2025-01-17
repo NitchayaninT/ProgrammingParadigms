@@ -1,8 +1,6 @@
 //Nitchayanin Thamkunanon 6580081
 package Ex2_6580081;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 public class NewMain {
@@ -53,7 +51,7 @@ public class NewMain {
 
                 //is the platform more than threshold mil?
                 String moreThanThreshold = "no";
-                if(billions > (float) threshold /1000) moreThanThreshold = "yes";
+                if(MAU > threshold) moreThanThreshold = "yes";
 
                 //write to file in : platform, MAU(thousands), MAU(billions), >500 millions (yes/no) format
                 writeFile.printf("%-15s%,13d%19.3f%16s%-3s\r\n",platform,thousands,billions," ",moreThanThreshold);
