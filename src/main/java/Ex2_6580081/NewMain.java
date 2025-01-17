@@ -22,7 +22,7 @@ public class NewMain {
 
             System.out.println("Read platform data from "+inputPath);
             System.out.println("Enter MAU threshold in millions =");
-            int threshold = keyboardScan.nextInt();
+            int threshold = keyboardScan.nextInt(); keyboardScan.nextLine();
             String LessthanThreshold = ">"+threshold+" millions";
             System.out.println("Write output "+outputPath);
 
@@ -32,7 +32,7 @@ public class NewMain {
             {
                 if(linesCount == 0)
                 {
-                    writeFile.printf("%s%22s%20s%20s\r\n","Platform","MAU(thousands)","MAU(billions)",LessthanThreshold);
+                    writeFile.printf("%s%23s%20s%20s\r\n","Platform","MAU(thousands)","MAU(billions)",LessthanThreshold);
                     linesCount++;
                     continue;
                 }
@@ -56,7 +56,7 @@ public class NewMain {
                 if(billions > (float) threshold /1000) moreThanThreshold = "yes";
 
                 //write to file in : platform, MAU(thousands), MAU(billions), >500 millions (yes/no) format
-                writeFile.printf("%-15s%,12d%19.3f%16s%-3s\r\n",platform,thousands,billions," ",moreThanThreshold);
+                writeFile.printf("%-15s%,13d%19.3f%16s%-3s\r\n",platform,thousands,billions," ",moreThanThreshold);
                 linesCount++;
             }
             writeFile.close(); // This ensures data is written to the file
