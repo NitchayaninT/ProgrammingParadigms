@@ -1,0 +1,17 @@
+Platform        MAU(thousands)       MAU(billions)      >1050 millions
+======================================================================
+Discord             150,000              0.150                no 
+Douyin              755,000              0.755                no 
+Facebook          3,650,000              3.650                yes
+Instagram         2,040,000              2.040                yes
+Line                178,000              0.178                no 
+LinkedIn            424,000              0.424                no 
+Pinterest           498,000              0.498                no 
+Reddit              430,000              0.430                no 
+Snapchat            800,000              0.800                no 
+TikTok            1,500,000              1.500                yes
+Tumblr              135,000              0.135                no 
+WeChat            1,340,000              1.340                yes
+WhatsApp          2,680,000              2.680                yes
+X                   611,000              0.611                no 
+YouTube           2,500,000              2.500                yes
