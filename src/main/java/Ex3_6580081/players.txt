@@ -1,0 +1,12 @@
+B, Anthony Davis,         1993,   172,  6008,  4164
+F, Bukayo Saka,           2001, 38:11, 38:14, 35:16
+B, Donovan Mitchell,      1996,   190,  6641,  5118
+F, Erling Haaland,        2000, 24:22, 35:36, 31:27
+B, Giannis Antetokounmpo, 1994,   203,   6794, 6183
+F, Harry Kane,            1993, 37:17, 38:30, 32:36
+B, Jimmy Butler,          1989,   181,  6111,  3931
+B, LeBron James,          1984,   182,  6542,  5107
+F, Marcus Rashford,       1997,  25:4, 35:17,  33:7
+F, Mohamed Salah,         1992, 35:23, 38:19, 32:18
+B, Nikola Jokic,          1995,   222,  7535,  5779
+F, Son Heung-Min,         1992, 35:23, 36:10, 35:17

@@ -1,12 +1,16 @@
 package Lab_Ch4;
 
-// ----- (3) add prefix final
+// ----- (3) add prefix final/ final class means you cannot extend it, so there will be error in class woman that tries to extend class man
+//there will be problem when overriding method from child class since its parent is final
 // ----- (6) add extends Baby
-class Man4 
+
+//its fine not to write a constructor in java, java will use the default constructor
+class Man4 //cannot extend Baby because Baby's constructor is private (imagine the class chain) therefore, it cannot call Baby's constructor
 {
     protected  String  name;
     protected  String  surname;
     protected  int     age;
+    //even if the vars are private, class woman can still use it by using setter getter
 
     // Constructor
     //public Man4()                             { }
@@ -26,7 +30,7 @@ class Man4
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
-class Woman4 extends Man4
+class Woman4 extends Man4//gets everything from class man except constructor
 {
     protected  boolean single;
     protected  String  maiden;
@@ -35,7 +39,7 @@ class Woman4 extends Man4
     // Constructor
     public Woman4(String n, String s, int a)	
     { 
-	super(n, s, a);
+	super(n, s, a); //calls constructor in class Man with 3 args, then class Man calls constructor in object using super() again
 
         // ----- (1) comment the call to super(...) and uncomment the following
 	//name = n; surname = s; age = a; 
@@ -46,14 +50,14 @@ class Woman4 extends Man4
     public void marriedTo(Man4 m)
     {
         // ----- (5) deep copy
-	//husband = new Man4( m.getName(), m.getSurname(), m.getAge() );
+	    husband = new Man4( m.getName(), m.getSurname(), m.getAge() ); //it creates a new Man4 object (points to new object)
         
-        // ----- (5) shallow copy
+        // ----- (5) shallow copy //it points to the same Man4 object
         husband = m;
         
-	maiden  = surname;
-	surname = husband.getSurname();
-	single  = false;
+        maiden  = surname;
+        surname = husband.getSurname();
+        single  = false;
     }
 
     // ------ (2) method overriding - change prefix from public to protected
@@ -79,6 +83,8 @@ class Woman4 extends Man4
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
+//create the object inside your own method so that you can set some properties, not allowing other people to create object outside the class
+    //purpose : dont want user to create empty object, we want to initialize object until its ready to use
 class Baby
 {
     protected String nickname;
@@ -101,8 +107,8 @@ class w4_5_Inheritance
     {
         w4_5_Inheritance mainApp = new w4_5_Inheritance();
         mainApp.testConstructor();
-        //mainApp.testPolymorphism();
-    }
+        mainApp.testPolymorphism();
+    }//to access non static methods from main, we have to create an object pf that class since main is static
     
     public void testConstructor()
     {
@@ -119,17 +125,17 @@ class w4_5_Inheritance
 
         
         // ----- (5) shallow vs. deep copy
-        //Mary.marriedTo(John);
-        //John.setName("Jack"); System.out.println(); Mary.speak();
+        Mary.marriedTo(John);
+        John.setName("Jack"); System.out.println(); Mary.speak();
 
         
         // ----- (6) class with private constructor
         System.out.println("\n\n--- Test private constructor ---");
-        /*
-        Baby Apple = new Baby("Apple");
+
+        /*Baby Apple = new Baby("Apple");//constructor is private, so you cannot create Baby object in another class
         //Baby Apple = Baby.createBaby("Apple");
-        Apple.cry();
-        */        
+        Apple.cry();*/
+
     }
     
     public void testPolymorphism()
@@ -143,7 +149,7 @@ class w4_5_Inheritance
 	M[0] = John;
 	M[1] = Mary;
 	M[2] = new Man4("Bruce", "Willis", 50);
-        M[3] = new Woman4("Sandra", "Bullock", 40);
+    M[3] = new Woman4("Sandra", "Bullock", 40);
         
 	for (int i=0; i < M.length; i++)  
             M[i].speak();

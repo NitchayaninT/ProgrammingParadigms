@@ -59,13 +59,14 @@ class w4_1_CreateObject //main class, you dont write any constructor -> java wil
 
         // ----- (2) Check object's type
         //           Object is a root of all classes in Java
-        Object any;
+        Object any; //can points to any object from any class
         System.out.println("\n\n--- Check object's type ---");
         any = Will;
-        if (any instanceof Man1) System.out.println("Man1 instance");
+        if (any instanceof Man1) System.out.println("Man1 instance"); //check if this pointer is pointing to the object of "Man1" class
         else                     System.out.println("Not Man1 instance");
 
-        System.out.println(any.getClass().getName());
+        System.out.println(any.getClass().getName());//or can check by using method .getClass().getName() to get the name of the class
+        //(Lab_Ch4.Man1)
         if (any.getClass().getName().equals("Lab_Ch4.Man1")) System.out.println("Class Man1 ");
         else                                                 System.out.println("Not class Man1");		
     }
