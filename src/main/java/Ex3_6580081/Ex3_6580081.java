@@ -36,8 +36,8 @@ class FootballPlayer extends Player {
     private float avgGoals;
     //Methods
     private int calculateAge(){this.age=CURRENT_YEAR-birthyear; return this.age;}
-    public void setGames(int game){this.games[GameCount]=game; this.GameCount++;}
-    public void setGoals(int goal){this.goals[GoalCount]=goal; this.GoalCount++;}
+    public int[] getGames(){return this.games;};
+    public int[] getGoals(){return this.games;};
     private int getTotalGame(){
         int totalGame = 0;
         for(int i=0;i<this.GameCount;i++)
@@ -87,10 +87,11 @@ class BasketballPlayer extends Player {
     //Vars
     public static int PlayersCount = 0;
     private int totalGames, totalMins, totalPts;
-    private float avgMins,avgPts;
     //Methods
     private int calculateAge(){this.age=CURRENT_YEAR-birthyear; return this.age;}
-
+    public int getTotalGames(){return this.totalGames;};
+    public int getTotalMins(){return this.totalMins;};
+    public int getTotalPts(){return this.totalPts;};
     @Override
     public void printPersonalData(){
         String ageStr = "age = "+calculateAge();
