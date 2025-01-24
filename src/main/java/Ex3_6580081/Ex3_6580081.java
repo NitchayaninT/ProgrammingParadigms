@@ -133,10 +133,8 @@ public class Ex3_6580081 {
             while(fileScan.hasNext())
             {
                 String line = fileScan.nextLine();
-                String [] cols = line.split(","); //split the cols
-
+                String [] cols = line.split(","); //split the col
                 String type = cols[0].trim();
-
                 String name = cols[1].trim();
                 int year = Integer.parseInt( cols[2].trim());
 

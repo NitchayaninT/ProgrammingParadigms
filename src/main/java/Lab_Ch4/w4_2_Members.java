@@ -11,7 +11,7 @@ class Alien2
     static private final int maxcount;
     static public int count;
 
-    static public void startup()                { System.out.println("\n=== Startup ===\n"); }
+    static public void startup() { System.out.println("\n=== Startup ===\n"); }
     //you can assign the values in static block (it has static vars and methods)
     static {
 	maxcount = 4;

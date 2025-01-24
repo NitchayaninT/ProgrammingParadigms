@@ -23,7 +23,6 @@ public class NewMain {
             int threshold = keyboardScan.nextInt(); keyboardScan.nextLine();
             String LessthanThreshold = ">"+threshold+" millions";
             System.out.println("Write output "+outputPath);
-
             //read from platform.txt & writing to output.txt
             int linesCount = 0;
             while(fileScan.hasNext())
