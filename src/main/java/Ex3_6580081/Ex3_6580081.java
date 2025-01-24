@@ -38,7 +38,7 @@ class FootballPlayer extends Player {
     //Methods
     private int calculateAge(){this.age=CURRENT_YEAR-birthyear; return this.age;}
     public int[] getGames(){return this.games;};
-    public int[] getGoals(){return this.games;};
+    public int[] getGoals(){return this.goals;};
     private int getTotalGame(){
         int totalGame = 0;
         for(int i=0;i<this.GameCount;i++)
