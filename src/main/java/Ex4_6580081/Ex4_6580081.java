@@ -49,7 +49,7 @@ class Company implements Comparable<Company> {
     public int getSales(){return this.sales;}
 }
 public class Ex4_6580081 {
-    static ArrayList<Company> Companies = new ArrayList<>();
+    ArrayList<Company> Companies = new ArrayList<>();
     public static void main(String []args)
     {
         Ex4_6580081 main = new Ex4_6580081();
