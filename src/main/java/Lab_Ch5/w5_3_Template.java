@@ -22,8 +22,8 @@ class Cell<T extends Flyer>
 
 // ----- (3) inherit from class template
 //           which class headers in (1) work ?
-/*
-class Airport extends Cell <Plane>
+//meaning class Cell can only be of any type that extends AnimalAbstract (or Flyer)
+class Airport extends Cell <Plane> //if class cell <T extends AnimalAbstract>, it doesnt work because inside <> is Plane, and Plane is not a child of animalabstract, but it implements flyer. So, flyer works
 {
     public Airport(Plane p)				{ super(p); }
     public void testAirport()
@@ -32,7 +32,7 @@ class Airport extends Cell <Plane>
 	member.fly("Manchester", "London");
     }
 };
-*/
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 class w5_3_Template
