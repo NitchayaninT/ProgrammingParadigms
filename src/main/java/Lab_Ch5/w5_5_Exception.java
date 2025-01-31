@@ -72,7 +72,7 @@ class Bird4 extends AnimalAbstract4
 /////////////////////////////////////////////////////////////////////////////////////////////
 class w5_5_Exception
 {
-    public static void main(String[] args)    //throws WingException, FoodException
+    public static void main(String[] args)    //throws WingException, FoodException, if included, jvm will print the exception messages
     {
 	Dog4 lassie  = new Dog4("Lassie");
 	Dog4 scooby  = new Dog4("Scooby");
@@ -82,10 +82,10 @@ class w5_5_Exception
 	//           - try throwing exception to JVM
 	//           - how to make both fly() and eat(...) be called ?
 	System.out.println("\n\n----- Test exception -----\n");
-	//lassie.fly("Manchester", "London");
+	//lassie.fly("Manchester", "London");//cannot call like this, exception is thrown -> so have to use try catch to handle
 	//lassie.eat(scooby);
 		
-        
+    //like this
 	try
 	{
             lassie.fly("Manchester", "London");
@@ -100,8 +100,8 @@ class w5_5_Exception
 	{
             lassie.eat(scooby);
         }
-	catch (FoodException e) { System.out.println(e); }    
-        //catch (FoodException e) { System.out.println(e.getClass().getName()); } 
+	//catch (FoodException e) { System.out.println(e); }
+        catch (FoodException e) { System.out.println(e.getClass().getName()); }
         
 
 	System.out.println("\n\n----- End -----");

@@ -22,20 +22,20 @@ class MyInputReader
         int numerator, divisor, result = 0;
         try
         {
-            String []buf = line.split("\\s+");         // split by one or more spaces
-            numerator = Integer.parseInt(buf[0]);
+            String []buf = line.split("\\s+"); // split the line by one or more spaces
+            numerator = Integer.parseInt(buf[0]);//get each item without any space
             divisor   = Integer.parseInt(buf[1]);
             result    = numerator / divisor;
             System.out.printf("%2d / %2d = %d \n", numerator, divisor, result);
         }
         catch(RuntimeException e) 
         //catch(ArithmeticException | ArrayIndexOutOfBoundsException e)
-        //catch(ArithmeticException | RuntimeException e)    
+        //catch(ArithmeticException | RuntimeException e) //cannot write like this because Artithmetic is child of Runtime exception
         {   
             System.out.println(e + " --> skip");
             result = 0; 
         }
-        finally
+        finally //this block is always excuted even if file ot exist, but if file not exist, we declared result = 0
         {
             sum = sum + result;
         }
@@ -53,11 +53,11 @@ class MyInputReader
                 processLine(fileScan.nextLine());
             }
         }
-        catch (FileNotFoundException e) 
+        catch (FileNotFoundException e) //if the file missing, just print the msg, not close scanner yet
         {
             System.out.println(e);
         }
-        finally 
+        finally //use finally to close the scanner object in old style
         {
             // ----- (1) close the file, either with or without an exception
             if (fileScan != null) fileScan.close();
@@ -70,6 +70,7 @@ class MyInputReader
         try (
             // ----- (2) declare fileScan in resource declaration of try-block
             //           it can be used only in try-block & close automatically
+            //THIS is global result, no need to close it later, it will be closed automatically
             Scanner fileScan = new Scanner(new File(path + fileName));
         ){
             while(fileScan.hasNextLine())  
@@ -81,7 +82,7 @@ class MyInputReader
         {
             System.out.println(e);
         }
-        finally 
+        finally //the program will always excute the code in finaly block, even if the file is not found
         {
             System.out.printf("Finally >> Sum = %d \n", sum);
         }
@@ -90,10 +91,10 @@ class MyInputReader
     public void newTry_openFileLoop() 
     {
         boolean opensuccess = false;
-        while (!opensuccess)
+        while (!opensuccess)//ask to insert new file name indefinitely until opensuccess = true
         {
             try (
-                Scanner fileScan = new Scanner(new File(path + fileName));
+                Scanner fileScan = new Scanner(new File(path + fileName));//global. open success or not
             ){
                 opensuccess = true;                
                 while(fileScan.hasNextLine())  
@@ -119,12 +120,12 @@ public class w5_6_TryResource
 {
     public static void main(String[] args) 
     {
-        String path     = "src/main/Java/Lab_Ch5/";
+        String path     = "src/main/java/Lab_Ch5/";
         String [] files = {"correctone.txt", "correctzero.txt", "wrong.txt"};
         
         MyInputReader calc = new MyInputReader( path, files[2] );
-        calc.oldTry_openFileOnce();
+        //calc.oldTry_openFileOnce(); //old style
         //calc.newTry_openFileOnce();
-        //calc.newTry_openFileLoop();
+        calc.newTry_openFileLoop();
     }    
 }
