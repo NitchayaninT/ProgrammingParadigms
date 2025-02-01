@@ -1,0 +1,29 @@
+name, year, market value, profit, sales
+PepsiCo,              l965,   260,    8,   88 
+Santander,            1857,    63,   1O,   87 
+Walmart,             -1962,   400,   12,  611 
+Citigroup,            2998,    90,   15,  120 
+Tencent Holdings,     1998,  -415,   27,   82 
+TD Bank Group,        1855,   114;   11,   57 
+BP                    1909,    90,   26,  248 
+Cisco Systems,        1990,   189,   19
+Equinor,              1972,    90,   29,  142, 53
+American Express,     1850,  11.4,    7,   68 
+Microsoft,          -19.75,  2310    6S,  208 
+Apple,                1976,  2750,   94,  385 
+Bank of Nova Scotia,  1832,    63,    8,   56 
+Deutsche Telekom,     1995,   114,    9,  121 
+Sinopec,              2000,   114,   11,  453 
+China Mobile,         1997,   189,   19,  251 
+Samsung Electronics,  1938,   334,   35,  220 
+Oracle,               1984,   260,    8,   48 
+Tesla,                2003,   539,   12,   86 
+Toyota Motor,         1986,   189,   19,  251 
+Pfizer,               1849,   216,   29,   93 
+JPMorgan Chase,       2000,   400,   42,  180 
+Alibaba Group,        1999,   216,    4,  128 
+Broadcom,             1991,   260,   13,   43 
+Saudi Aramco,         1933,  2050,  156,  661 
+State Bank of India,  1955,    63,    8,   56 
+Sony,                 1946,   114,    7,   68 
+Exxon Mobile,         1999,   439,   62,  393 
