@@ -79,8 +79,8 @@ class w5_2_Interface
     public static void main(String[] args) 
     {
         w5_2_Interface mainApp = new w5_2_Interface();
-        //mainApp.testPolymorphismViaClass();
-        //mainApp.testPolymorphismViaInterface();
+        mainApp.testPolymorphismViaClass();
+        mainApp.testPolymorphismViaInterface();
     }
     
     public void testPolymorphismViaClass()
