@@ -1,9 +1,7 @@
 //Nitchayanin Thamkunanon 6580081
 package Ex6_6580081;
-import javax.smartcardio.Card;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -31,15 +29,15 @@ class OneCard {
     public String getRankStr()
     {
         if(rank%13==0){return "A";}
-
-        else{return String.valueOf(rank%13);}
+        else if(rank%13==10){return "J";}
+        else if(rank%13==11){return "Q";}
+        else if(rank%13==12){return "K";}
+        else{return String.valueOf((rank%13)+1);}
     }
     public String toString()
     {
-        return getRankStr()+" of "+getSuitStr();
+        return String.format("%2s of %-9s", getRankStr(), getSuitStr());
     }
-
-
 }
 class CardThread extends Thread {
     private PrintWriter out;
@@ -57,10 +55,9 @@ class CardThread extends Thread {
         String threadFile = Thread.currentThread().getName()+".txt";
         String outputPath = path + threadFile;
         File outputFile = new File(outputPath);
-        rounds = 1; //start at round 1
+        rounds = 1;
         try {
             // Create PrintWriter object to write result to a separate file
-            //1 deck = 52 cards
             out = new PrintWriter(new FileWriter(outputFile, false));//output file
             addCards(); //original Deck is here
             Random random = new Random();
@@ -76,30 +73,23 @@ class CardThread extends Thread {
                     }
                     randomCards.add(card);
                 }
-                // Execute steps 1-3 in loop:
-                // 1. Draw 4 cards from the same deck. The cards must not duplicate.
-                // 2. Print round number and these 4 cards to output file.
-                out.printf("Round %3d "+randomCards,rounds);
-                //System.out.println("Round "+rounds+" "+randomCards);
-                // 3. If all cards are from the same suit or have equal rank, stop the loop.
-                    int equalRankCount = 0;
-                    int equalSuitCount = 0;
-                    for(int j=0;j<randomCards.size();j++)
+                out.printf("Round %3d%3s"+randomCards+"%4s\n",rounds,"","");
+                int equalRankCount = 0;
+                int equalSuitCount = 0;
+                for(int j=0;j<randomCards.size();j++)
+                {
+                    OneCard card = randomCards.get(j);
+                    for(int i=j+1;i<randomCards.size();i++)
                     {
-                        OneCard card = randomCards.get(j);
-                        for(int i=j+1;i<randomCards.size();i++)
-                        {
-                            if(card == randomCards.get(i)) continue;
-                            if(card.getSuit()==randomCards.get(i).getSuit())
-                            {equalSuitCount++;break;}
-                            else if(card.getRank()==randomCards.get(i).getRank())
-                            {equalRankCount++;break;}
-                        }
+                        if(card == randomCards.get(i)) continue;
+                        if(card.getSuit()==randomCards.get(i).getSuit())
+                        {equalSuitCount++;break;}
+                        else if(card.getRank()==randomCards.get(i).getRank())
+                        {equalRankCount++;break;}
                     }
-                    randomCards.clear();
-                    if(equalRankCount == 3 || equalSuitCount==3)break;
-                // Otherwise, clear randomCards & continue to the next round.
-                // After the loop, print #rounds to the screen
+                }
+                randomCards.clear();
+                if(equalRankCount == 3 || equalSuitCount==3)break;
                 rounds++;
             }
             out.close();
@@ -109,7 +99,6 @@ class CardThread extends Thread {
             System.out.println("Cannot write to output file");
             System.err.println(e);
         }
-
     }
     private void addCards()
     {
@@ -143,26 +132,21 @@ class CardThread extends Thread {
                 originalDeck.get(i).setRank(i%13);
                 originalDeck.get(i).setSuit(round);
             }
-
         }
     }
-    public int getRounds(){return rounds;}
 }
 public class Ex6_6580081 {
     static ArrayList<CardThread> threads = new ArrayList<>();
     public static void main(String []args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Number of threads =");
-        int threadNo = sc.nextInt();
-
-        for(int i=0;i<threadNo;i++)
+        int threadCount = sc.nextInt();
+        //creating and starting threads
+        for(int i=0;i<threadCount;i++)
         {
             CardThread T = new CardThread(i);
             threads.add(T);
             T.start();
         }
-
-
-
     }
 }
