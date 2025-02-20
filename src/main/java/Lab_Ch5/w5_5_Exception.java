@@ -100,8 +100,8 @@ class w5_5_Exception
 	{
             lassie.eat(scooby);
         }
-	//catch (FoodException e) { System.out.println(e); }
-        catch (FoodException e) { System.out.println(e.getClass().getName()); }
+	catch (FoodException e) { System.out.println(e); }
+       // catch (FoodException e) { System.out.println(e.getClass().getName()); }
         
 
 	System.out.println("\n\n----- End -----");

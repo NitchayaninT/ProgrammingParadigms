@@ -39,12 +39,12 @@ class Woman4 extends Man4//gets everything from class man except constructor
     // Constructor
     public Woman4(String n, String s, int a)	
     { 
-	super(n, s, a); //calls constructor in class Man with 3 args, then class Man calls constructor in object using super() again
+        super(n, s, a); //calls constructor in class Man with 3 args, then class Man calls constructor in object using super() again
 
-        // ----- (1) comment the call to super(...) and uncomment the following
-	//name = n; surname = s; age = a; 
+            // ----- (1) comment the call to super(...) and uncomment the following
+        //name = n; surname = s; age = a;
 
-	single = true;
+        single = true;
     }
 
     public void marriedTo(Man4 m)
