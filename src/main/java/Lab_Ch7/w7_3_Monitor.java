@@ -124,7 +124,7 @@ class w7_3_Monitor
 	// ---- (3) change C2's buffer to buffer_2
 	P1.setBuffer(bufferMain);  P1.setRounds(3);
 	C1.setBuffer(bufferMain);  C1.setRounds(3);
-	C2.setBuffer(bufferMain);  C2.setRounds(3);
+	C2.setBuffer(bufferAnother);  C2.setRounds(3);
 
         
 	// ---- (4) barrier synchronization

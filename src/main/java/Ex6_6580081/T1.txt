@@ -1,0 +1,8 @@
+Round 1 [11 of Hearts, 10 of Hearts, 9 of Diamonds, 11 of Diamonds]
+Round 2 [A of Spades, 4 of Hearts, 11 of Hearts, 10 of Spades]
+Round 3 [7 of Spades, 6 of Club, 2 of Spades, 11 of Diamonds]
+Round 4 [10 of Spades, 2 of Diamonds, 4 of Hearts, 10 of Club]
+Round 5 [12 of Diamonds, 1 of Spades, 4 of Diamonds, 11 of Club]
+Round 6 [3 of Diamonds, 9 of Club, 8 of Diamonds, 2 of Spades]
+Round 7 [10 of Diamonds, 6 of Spades, 6 of Diamonds, 9 of Spades]
+Round 8 [1 of Spades, A of Hearts, 9 of Diamonds, 2 of Hearts]
