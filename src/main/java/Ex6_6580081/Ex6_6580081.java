@@ -136,8 +136,7 @@ class CardThread extends Thread {
     }
 }
 public class Ex6_6580081 {
-    static ArrayList<CardThread> threads = new ArrayList<>();
-    public static void main(String []args) throws InterruptedException {
+    public static void main(String []args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Number of threads =");
         int threadCount = sc.nextInt();
@@ -145,7 +144,6 @@ public class Ex6_6580081 {
         for(int i=0;i<threadCount;i++)
         {
             CardThread T = new CardThread(i);
-            threads.add(T);
             T.start();
         }
     }
