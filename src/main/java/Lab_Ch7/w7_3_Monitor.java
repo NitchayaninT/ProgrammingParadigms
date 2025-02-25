@@ -127,20 +127,20 @@ class w7_3_Monitor
 	C2.setBuffer(bufferAnother);  C2.setRounds(3);
 
         
-	// ---- (4) barrier synchronization
-	/*
+	// ---- (4) barrier synchronization. all threads will continue togther (call barrier, which is different from join)
+        /*
         MyBarrier finish = new MyBarrier();
         P1.setMyBarrier( finish );
         C1.setMyBarrier( finish );
-        C2.setMyBarrier( finish );
-	*/
+        C2.setMyBarrier( finish );*/
 
-	/*
-	CyclicBarrier finish = new CyclicBarrier(3);
+
+
+	/*CyclicBarrier finish = new CyclicBarrier(3);
 	P1.setCyclicBarrier( finish );
 	C1.setCyclicBarrier( finish );
-	C2.setCyclicBarrier( finish );
-	*/
+	C2.setCyclicBarrier( finish );*/
+
 
         
 	P1.start();
@@ -149,15 +149,16 @@ class w7_3_Monitor
 
         
 	// ---- (6) joining threads
-        //while(P1.isAlive() || C1.isAlive() || C2.isAlive())  { }
-	/*
+        //while(P1.isAlive() || C1.isAlive() || C2.isAlive())  { } //main thread NOT competitng with the CPU with other threads
+
 	try
 	{
-            P1.join();  C1.join();  C2.join();
+            P1.join();  C1.join();  C2.join(); //wait until these threads  are dead
 	}
 	catch (InterruptedException e) { }
-	*/
+
         
-	System.out.println("Main thread finishes");
+	System.out.println("Main thread finishes");//main thread doesnt have anything else to do after creating child threads = print directly
+        //but if we call join, main will wait for other threads to finish
     }
 }
