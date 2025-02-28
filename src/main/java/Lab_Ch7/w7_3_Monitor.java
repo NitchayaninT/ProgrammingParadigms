@@ -60,16 +60,16 @@ class Buffer3
     {
 	// ----- (2) use synchronized block instead of (1)
 	//synchronized (this)
-	{
-            System.out.printf("%s puts ", Thread.currentThread().getName());
-            for (int i=0; i < 10; i++)  
-            {
-		int delay = (int)(Math.random() * 123);
-		try { Thread.sleep(delay); }  catch (InterruptedException e) { }
-		System.out.print(i + " ");
-            }
-            System.out.println();
-	}
+        {
+                System.out.printf("%s puts ", Thread.currentThread().getName());
+                for (int i=0; i < 10; i++)
+                {
+                int delay = (int)(Math.random() * 123);
+                try { Thread.sleep(delay); }  catch (InterruptedException e) { }
+                System.out.print(i + " ");
+                }
+                System.out.println();
+        }
     }
 
     synchronized public void get()
@@ -79,12 +79,12 @@ class Buffer3
             System.out.printf("%s gets ", Thread.currentThread().getName());
             for (int i=9; i >= 0; i--)  
             {
-		int delay = (int)(Math.random() * 123);
-		try { Thread.sleep(delay); }  catch (InterruptedException e) { }
-		System.out.print(i + " ");
+                int delay = (int)(Math.random() * 123);
+                try { Thread.sleep(delay); }  catch (InterruptedException e) { }
+                System.out.print(i + " ");
             }
             System.out.println();
-	}
+	    }
     }
 };
 
@@ -121,7 +121,7 @@ class w7_3_Monitor
 	ConsumerThread C1 = new ConsumerThread("Consumer 1");
 	ConsumerThread C2 = new ConsumerThread("Consumer 2");
 	
-	// ---- (3) change C2's buffer to buffer_2
+	// ---- (3) change C2's buffer to buffer_2 (access different buffer, different resources.)
 	P1.setBuffer(bufferMain);  P1.setRounds(3);
 	C1.setBuffer(bufferMain);  C1.setRounds(3);
 	C2.setBuffer(bufferAnother);  C2.setRounds(3);
@@ -139,8 +139,8 @@ class w7_3_Monitor
 	/*CyclicBarrier finish = new CyclicBarrier(3);
 	P1.setCyclicBarrier( finish );
 	C1.setCyclicBarrier( finish );
-	C2.setCyclicBarrier( finish );*/
-
+	C2.setCyclicBarrier( finish );
+*/
 
         
 	P1.start();

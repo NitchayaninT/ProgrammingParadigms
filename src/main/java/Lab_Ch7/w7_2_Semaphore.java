@@ -30,17 +30,17 @@ class Buffer2 extends Semaphore
 
     public void access(int c)
     {
-	MyThread2 me = (MyThread2)Thread.currentThread();
+        MyThread2 me = (MyThread2)Thread.currentThread();
 
-	// ----- (3) semaphore synchronization
-	try { acquire(); } catch (InterruptedException e) { } //call aquire, S is now 0
+        // ----- (3) semaphore synchronization
+        try { acquire(); } catch (InterruptedException e) { } //call aquire, S is now 0
 
-	System.out.println( "\n" + me.getName() + " occupies buffer > " + c );
-	for (int i=0; i < 100; i++) 
-            System.out.print( me.getName() + " " );
-        System.out.println( "\n" + me.getName() + " releases buffer > " + c );
+        System.out.println( "\n" + me.getName() + " occupies buffer > " + c );
+        for (int i=0; i < 100; i++)
+                System.out.print( me.getName() + " " );
+            System.out.println( "\n" + me.getName() + " releases buffer > " + c );
 
-	release();//thread X finishes using critical section, next one proceeds to critical section// S=1
+        release();//thread X finishes using critical section, next one proceeds to critical section// S=1
     }
 };
 

@@ -24,8 +24,8 @@ class ExchangeThread extends Thread
         
         int x = -1;
         // ----- (1) try with & without barrier
-        //try { x = barrier.await(); }  catch(Exception e) { }
-        //if (x == 0)
+        //try { x = barrier.await(); }  catch(Exception e) { } //await returns no of threads still to arrive in barrier
+        //if (x == 0) //last one to arrive in barrier
         {
             System.out.printf("Thread %s >> ----------------------- \n", Thread.currentThread().getName());
             System.out.printf("Thread %s >> prepare to exchange     \n", Thread.currentThread().getName());

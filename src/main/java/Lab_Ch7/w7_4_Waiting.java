@@ -7,19 +7,19 @@ class SharedBuffer
 
     synchronized public void access()
     {
-	WaitingThread me = (WaitingThread)(Thread.currentThread());
-	while (share < me.getW())
-	{
-            System.out.printf("%s >> waits \n\n", me.getName());
-            try { wait(); } catch(Exception e) { }
-	}
-	System.out.printf("%s >> is released \n\n", me.getName());
-	share = me.updateShare();
-	if (share > me.getN())
-	{
-            System.out.printf("%s >> notifies all \n\n", me.getName());
-            notifyAll();
-	}
+        WaitingThread me = (WaitingThread)(Thread.currentThread());
+        while (share < me.getW())
+        {
+                System.out.printf("%s >> waits \n\n", me.getName());
+                try { wait(); } catch(Exception e) { }
+        }
+        System.out.printf("%s >> is released \n\n", me.getName()); //step 5 : A is released because share(5) is now more than 0 (me.getW())
+        share = me.updateShare(); //update share from -10 to 5 (3rd step)
+        if (share > me.getN())
+        {
+                System.out.printf("%s >> notifies all \n\n", me.getName());
+                notifyAll();
+        }
     }
 }
 
@@ -30,11 +30,11 @@ class WaitingThread extends Thread
 
     public WaitingThread(String na, SharedBuffer sh, int w, int n, int up)	
     { 
-	super(na); 
-	share   = sh; 
-	local_w = w; 
-	local_n = n; 
-	update  = up; 
+        super(na);
+        share   = sh;
+        local_w = w;
+        local_n = n;
+        update  = up;
     }
 
     public int getW()	     { return local_w; }
