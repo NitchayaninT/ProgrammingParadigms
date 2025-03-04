@@ -3,6 +3,7 @@ package Lab_Ch8;
 import java.awt.*;
 import javax.swing.*;
 
+//better program structure for event driven programming
 class w8_2_Component extends JFrame
 {
     public w8_2_Component()
@@ -73,7 +74,7 @@ class w8_2_Component extends JFrame
 
 		// ----- (7) add check box, radio button
 			//           try different GridLayout
-		/*
+
 		JToggleButton [] tb = new JToggleButton[5];
 		tb[0] = new JCheckBox( items[0], true );
 		tb[1] = new JCheckBox( items[1], true );
@@ -85,31 +86,30 @@ class w8_2_Component extends JFrame
 			buttonPanel.setLayout( new GridLayout(2, 3) );
 		for (int i=0; i < 5; i++) buttonPanel.add( tb[i] );
 		cregion.add(buttonPanel);
-			*/
+
 
 
 		// ----- (8) group multiple radio buttons
-		/*
+
 		ButtonGroup rgroup = new ButtonGroup();
 		for (int i=2; i < 5; i++) rgroup.add( tb[i] );
-		*/
 
 
 		// ----- (9) add list box, combo box
-		/*
-		JComboBox cb = new JComboBox(items);
+
+		JComboBox cb = new JComboBox(items); //combo box
 		cregion.add(cb);
 
-		JList lb = new JList(items);
+		JList lb = new JList(items);//list box
 		lb.setVisibleRowCount(5);
-			JScrollPane lsc = new JScrollPane(lb);
+			JScrollPane lsc = new JScrollPane(lb);//put list in scroll pane
 			lsc.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		cregion.add(lsc);
 
 		//lb.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 		//lb.setSelectionMode( ListSelectionModel.SINGLE_INTERVAL_SELECTION );
-			lb.setSelectionMode( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
-			*/
+			lb.setSelectionMode( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION ); //can select many items
+
 
 		// ----- (4) validate container once all components are added
 		this.validate();
