@@ -36,8 +36,8 @@ class MyImageIcon extends ImageIcon
 
     public MyImageIcon resize(int width, int height)
     {
-	Image oldimg = this.getImage();
-	Image newimg = oldimg.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+        Image oldimg = this.getImage();
+        Image newimg = oldimg.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
         return new MyImageIcon(newimg);
     }
 }
