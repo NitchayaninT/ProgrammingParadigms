@@ -292,9 +292,11 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
 //method to check collision between wing and any icon (needs to check which icon it collides first)
     public void checkCollision(CharacterLabel other)
     {
+        Container p = getParent();
         if ( this.getBounds().intersects(other.getBounds()) )
         {
-            other.setAltIcon(); //transform to ALT icon
+            other.switchCharacter(); //transform to ALT icon
+            p.remove(iconMain);
             //this.doSomething();
         }
     }
