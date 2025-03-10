@@ -1,3 +1,5 @@
+//Pakin Panawattanakul 6580043
+//Nitchayanin Thamkunanon 6580081
 package Ex8_6580081;
 
 import java.awt.*;
@@ -67,20 +69,82 @@ class MainApplication extends JFrame implements KeyListener
     public CharacterLabel   getFlyingLabel()   { return flyingLabel; }    
     public void setFlying(CharacterLabel cb)   { flyingLabel = cb; }
 
+    //Triggers after you press and then "release" a key but only if the key produces a character
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 
+    //Triggers as soon as you press down any key (including non-text keys like arrow keys, shift, alt, ctrl, etc.).
     @Override
     public void keyPressed(KeyEvent e) {
+        //for marmite, press A/D. if its crow, can also press W/S
+        keyPressedMarmite(e);
+        //for butter, press LEFT RIGHT arrow. If its butterfly, can also press UP DOWN
+        keyPressedButter(e);
+        //take wings off the flyingLabel when pressing ESC and reset the frame's title
+        takeWingsOff(e);
     }
 
+    //Detecting when the user stops pressing a key.
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyPressedMarmite(KeyEvent e)
+    {
+        if ( e.getKeyCode() == KeyEvent.VK_A )
+        {
+            charLabels[0].moveLeft();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_D)
+        {
+            charLabels[0].moveRight();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_W)
+        {
+            if(charLabels[0] instanceof FlyingLabel)
+            {
+                ((FlyingLabel)charLabels[0]).moveUp();
+            }
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_S)
+        {
+            if(charLabels[0] instanceof FlyingLabel)
+            {
+                ((FlyingLabel)charLabels[0]).moveDown();
+            }
+        }
+    }
+    public void keyPressedButter(KeyEvent e)
+    {
+        if ( e.getKeyCode() == KeyEvent.VK_LEFT )
+        {
+            charLabels[1].moveLeft();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+        {
+            charLabels[1].moveRight();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_UP)
+        {
+            //call child class through charLabels
+
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_DOWN)
+        {
+
+        }
+    }
+    public void takeWingsOff(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            setTitle("Wings off");
+        }
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// base class for each icon
 abstract class BaseLabel extends JLabel
 {
     protected String           name;
@@ -122,8 +186,9 @@ abstract class BaseLabel extends JLabel
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// characterLabel :  (charLabels array keeping Marmite and Butter) can
-/// move by keys WSAD or arrow keys.
+//characterLabel : for Marmite and Butter
+//Marmite can move left/right by keys A/D, but can't move up/down
+//Butter can move left/right by arrow keys LEFT/RIGHT, but can't move up/down
 class CharacterLabel extends BaseLabel implements MouseListener
 { 
     public CharacterLabel(String file1, String file2, int w, int h, MainApplication pf)				
@@ -131,36 +196,60 @@ class CharacterLabel extends BaseLabel implements MouseListener
         super(file1, file2, w, h, pf);
     }
 
-    public void updateLocation()    { }    
-    public void moveUp()            { }
-    public void moveDown()          { }
-    public void moveLeft()          { }
-    public void moveRight()         { }
+    public void updateLocation()    {setBounds(curX,curY,width,height);}
+    public void moveUp()            { curY +=10;}
+    public void moveDown()          { curY -=10;}
+    public void moveLeft(){
+        Container p = getParent();
+        curX -= 10;
+        //when reach left side of the frame, it will reappear on right side (enters on right side)
+        if(curX+width<0){ //when icon "completely" gone
+            curX = p.getWidth();
+        }
+        updateLocation();
+    }
+    public void moveRight(){
+        Container p = getParent();
+        curX += 10;
+        //when reach right side of the frame, it will reappear on left side (enters on left side)
+        if(curX>p.getWidth()){
+            curX = -width;
+        }
+        updateLocation();
+    }
+    //Switch between the character with & without wings.
+    public void switchCharacter()
+    {
+        if(getIcon()==iconMain) {setAltIcon(); }
+        else {setMainIcon();}
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {}
 
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
+    //Jumps to a random location whenever the mouse enters the label’s bounds.
     @Override
     public void mouseEntered(MouseEvent e) {
+        Container p = getParent();
+        Random random = new Random();
+        if (p != null) {
+            int maxX = p.getWidth() - width;
+            int maxY = p.getHeight() - height;
 
+            curX = random.nextInt(maxX);
+            curY = random.nextInt(maxY);
+
+            setBounds(curX, curY, width, height);
+        }
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) {}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,11 +261,50 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
         super(file, null, w, h, pf);
     }   
 
-    public void updateLocation()    { }
+    public void updateLocation()    {setBounds(curX,curY,width,height);}
 
     @Override
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+        //previous location plus x and y locations
+        curX = curX + e.getX();
+        curY = curY + e.getY();
+
+        //update the location to follow the cursor
+        Container p = getParent();
+        if (curX < 0)  curX = 0; //dragged within the frame
+        if (curY < 0)  curY = 0; //dragged within the frame
+        if (curX + width  > p.getWidth())   curX = p.getWidth() - width; //move within the bounds
+        if (curY + height > p.getHeight())  curY = p.getHeight() - height;
+
+        //if overlaps with CharacterLabel(which is a content in the frame), switch its and character's labels to alternative labels
+        for (Component c : parentFrame.getContentPane().getComponents()) {
+            if (c instanceof CharacterLabel) {
+                checkCollision((CharacterLabel) c);
+            }
+        }
+
+        updateLocation();
+    }
 
     @Override
     public void mouseMoved(MouseEvent e) {}
+
+//method to check collision between wing and any icon (needs to check which icon it collides first)
+    public void checkCollision(CharacterLabel other)
+    {
+        if ( this.getBounds().intersects(other.getBounds()) )
+        {
+            other.setAltIcon(); //transform to ALT icon
+            //this.doSomething();
+        }
+    }
+}
+
+//character with wings (crow or butterfly)
+class FlyingLabel extends CharacterLabel
+{
+    public FlyingLabel(String file1, String file2, int w, int h, MainApplication pf) {
+        super(file1, file2, w, h, pf);
+    }
+
 }

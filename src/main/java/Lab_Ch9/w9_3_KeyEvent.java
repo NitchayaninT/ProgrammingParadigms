@@ -62,28 +62,28 @@ class DoubleText implements KeyListener
 
     public DoubleText(JPasswordField p, JTextArea t)	
     { 
-	in = p; out = t; 
-	in.addKeyListener( this );
+        in = p; out = t;
+        in.addKeyListener( this );
     }
 
     @Override
     public void keyTyped( KeyEvent e )
     {
-	//System.out.printf("t >>  %c  (%s) \n", e.getKeyChar(), e.getKeyText(e.getKeyCode()) );
-	String current = out.getText();
+        //System.out.printf("t >>  %c  (%s) \n", e.getKeyChar(), e.getKeyText(e.getKeyCode()) );
+        String current = out.getText();
 
-	// ----- (2) get the last char from "in" and add it to "out"
-	current = current + e.getKeyChar();
-	out.setText(current);
+        // ----- (2) get the last char from "in" and add it to "out"
+        current = current + e.getKeyChar();
+        out.setText(current);
 
-	// ----- (3) consume the event
-	//e.consume();
+        // ----- (3) consume the event
+        //e.consume();
     }
 
     @Override
     public void keyPressed( KeyEvent e )
     { 
-	//System.out.printf("p >>  %c  (%s) \n", e.getKeyChar(), e.getKeyText(e.getKeyCode()) );
+	    System.out.printf("p >>  %c  (%s) \n", e.getKeyChar(), e.getKeyText(e.getKeyCode()) );
 
 	// ----- (4) if DEL is pressed, clear everything
 	//           DEL button has no unicode character -> getKeyCode()
