@@ -247,7 +247,7 @@ class CharacterLabel extends BaseLabel implements MouseListener
                 curY = random.nextInt(maxY);
 
                 setBounds(curX, curY, width, height);
-                }
+            }
         }
     }
 
@@ -273,8 +273,9 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
     @Override
     public void mouseDragged(MouseEvent e) {
         //previous location plus x and y locations
-        curX = curX + e.getX();
-        curY = curY + e.getY();
+        System.out.println(e.getX());
+        curX = e.getX() - getHeight();
+        curY = e.getY() - getWidth();
 
         //update the location to follow the cursor
         Container p = getParent();
