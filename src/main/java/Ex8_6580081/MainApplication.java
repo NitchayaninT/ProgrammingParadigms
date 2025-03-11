@@ -81,12 +81,39 @@ class MainApplication extends JFrame implements KeyListener
     //Triggers as soon as you press down any key (including non-text keys like arrow keys, shift, alt, ctrl, etc.).
     @Override
     public void keyPressed(KeyEvent e) {
-        //for marmite, press A/D. if its crow, can also press W/S
-        keyPressedMarmite(e);
-        //for butter, press LEFT RIGHT arrow. If its butterfly, can also press UP DOWN
-        keyPressedButter(e);
-        //take wings off the flyingLabel when pressing ESC and reset the frame's title
-        takeWingsOff(e);
+        int keyCode = e.getKeyCode();
+        switch (keyCode){
+            // move marmite by WASD
+            case KeyEvent.VK_A : charLabels[0].moveLeft(); break;
+            case KeyEvent.VK_D : charLabels[0].moveRight(); break;
+            case KeyEvent.VK_W :
+                if (charLabels[0].getFlyable()){
+                    charLabels[0].moveUp();
+                }
+                break;
+            case KeyEvent.VK_S :
+                if (charLabels[0].getFlyable()){
+                    charLabels[0].moveDown();
+                }
+                break;
+
+            //move marmite by arrow keys
+            case KeyEvent.VK_LEFT : charLabels[1].moveLeft(); break;
+            case KeyEvent.VK_RIGHT : charLabels[1].moveRight(); break;
+            case KeyEvent.VK_UP :
+                if (charLabels[1].getFlyable()){
+                    charLabels[1].moveUp();
+                }
+                break;
+            case KeyEvent.VK_DOWN :
+                if (charLabels[1].getFlyable()){
+                    charLabels[1].moveDown();
+                }
+                break;
+            case KeyEvent.VK_ESCAPE :
+                takeWingsOff();
+        }
+
     }
 
     //Detecting when the user stops pressing a key.
@@ -94,57 +121,26 @@ class MainApplication extends JFrame implements KeyListener
     public void keyReleased(KeyEvent e) {
     }
 
-    public void keyPressedMarmite(KeyEvent e)
+    public void takeWingsOff()
     {
-        if ( e.getKeyCode() == KeyEvent.VK_A )
-        {
-            charLabels[0].moveLeft();
+        Random rand = new Random();
+        int x = rand.nextInt(framewidth);
+        int y = rand.nextInt(frameheight);
+        if (charLabels[0].getFlyable()){
+            CharacterLabel marmite = charLabels[0];
+            marmite.switchCharacter();
+            marmite.setMoveConditions(marmite.curX,marmite.getHeight(),true,false);
+            itemLabel.setMoveConditions(x,y,true,true);
+            itemLabel.setVisible(true);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_D)
-        {
-            charLabels[0].moveRight();
+        else if (charLabels[1].getFlyable()){
+            CharacterLabel butter = charLabels[1];
+            butter.switchCharacter();
+            butter.setMoveConditions(butter.curX,butter.getHeight(),true,false);
+            itemLabel.setMoveConditions(x,y,true,true);
+            itemLabel.setVisible(true);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_W)
-        {
-            if(charLabels[0] instanceof FlyingLabel)
-            {
-                ((FlyingLabel)charLabels[0]).moveUp();
-            }
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_S)
-        {
-            if(charLabels[0] instanceof FlyingLabel)
-            {
-                ((FlyingLabel)charLabels[0]).moveDown();
-            }
-        }
-    }
-    public void keyPressedButter(KeyEvent e)
-    {
-        if ( e.getKeyCode() == KeyEvent.VK_LEFT )
-        {
-            charLabels[1].moveLeft();
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-        {
-            charLabels[1].moveRight();
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_UP)
-        {
-            //call child class through charLabels
-
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
-
-        }
-    }
-    public void takeWingsOff(KeyEvent e)
-    {
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-        {
-            setTitle("Wings off");
-        }
+        setTitle("Wings off");
     }
 }
 
@@ -240,21 +236,27 @@ class CharacterLabel extends BaseLabel implements MouseListener
     //Jumps to a random location whenever the mouse enters the label’s bounds.
     @Override
     public void mouseEntered(MouseEvent e) {
-        Container p = getParent();
-        Random random = new Random();
-        if (p != null) {
-            int maxX = p.getWidth() - width;
-            int maxY = p.getHeight() - height;
+        if(horizontalMove){
+            Container p = getParent();
+            Random random = new Random();
+            if (p != null) {
+                int maxX = p.getWidth() - width;
+                int maxY = p.getHeight() - height;
 
-            curX = random.nextInt(maxX);
-            curY = random.nextInt(maxY);
+                curX = random.nextInt(maxX);
+                curY = random.nextInt(maxY);
 
-            setBounds(curX, curY, width, height);
+                setBounds(curX, curY, width, height);
+                }
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    public boolean getFlyable(){
+        return this.verticalMove;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +302,9 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
         if ( this.getBounds().intersects(other.getBounds()) )
         {
             other.switchCharacter(); //transform to ALT icon
-            //this.doSomething();
+            other.setMoveConditions(true,true);
+            this.setMoveConditions(false,false);
+            this.setVisible(false);
         }
     }
 }
