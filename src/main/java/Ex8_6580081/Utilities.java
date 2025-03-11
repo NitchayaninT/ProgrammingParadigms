@@ -11,7 +11,7 @@ interface MyConstants
     static final String PATH           = "src/main/java/Ex8_6580081/resources/";
     static final String FILE_BG        = PATH + "background.jpg";
     static final String FILE_CH_1_MAIN = PATH + "marmite.png";
-    static final String FILE_CH_1_ALT  = PATH + "crow.png";    
+    static final String FILE_CH_1_ALT  = PATH + "crow.png";
     static final String FILE_CH_2_MAIN = PATH + "butter.png";
     static final String FILE_CH_2_ALT  = PATH + "butterfly.png";
     static final String FILE_ITEM      = PATH + "wing.png";    
