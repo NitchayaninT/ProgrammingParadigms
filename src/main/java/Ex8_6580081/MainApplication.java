@@ -97,7 +97,7 @@ class MainApplication extends JFrame implements KeyListener
                 }
                 break;
 
-            //move marmite by arrow keys
+            //move butter by arrow keys
             case KeyEvent.VK_LEFT : charLabels[1].moveLeft(); break;
             case KeyEvent.VK_RIGHT : charLabels[1].moveRight(); break;
             case KeyEvent.VK_UP :
@@ -129,14 +129,14 @@ class MainApplication extends JFrame implements KeyListener
         if (charLabels[0].getFlyable()){
             CharacterLabel marmite = charLabels[0];
             marmite.switchCharacter();
-            marmite.setMoveConditions(marmite.curX,marmite.getHeight(),true,false);
+            marmite.setMoveConditions(marmite.curX,this.getY()-marmite.getHeight(),true,false);
             itemLabel.setMoveConditions(x,y,true,true);
             itemLabel.setVisible(true);
         }
         else if (charLabels[1].getFlyable()){
             CharacterLabel butter = charLabels[1];
             butter.switchCharacter();
-            butter.setMoveConditions(butter.curX,butter.getHeight(),true,false);
+            butter.setMoveConditions(butter.curX,this.getY()-butter.getHeight(),true,false);
             itemLabel.setMoveConditions(x,y,true,true);
             itemLabel.setVisible(true);
         }
@@ -171,13 +171,15 @@ abstract class BaseLabel extends JLabel
     public String getName()         { return name; }
     public void setMainIcon()       { setIcon(iconMain); }    
     public void setAltIcon()        { setIcon(iconAlt); }
-    
+
+    //for takeWingsOff, butter and marmite have to be on the ground
     public void setMoveConditions(int x, int y, boolean hm, boolean vm)
     {
         curX = x; curY = y; 
         setBounds(curX, curY, width, height);
         setMoveConditions(hm, vm);
-    } 
+    }
+    //for setting move condition, if the icon can move vertical, horizontal, both or neither
     public void setMoveConditions(boolean hm, boolean vm)
     {
         horizontalMove = hm; verticalMove = vm;
@@ -198,8 +200,19 @@ class CharacterLabel extends BaseLabel implements MouseListener
     }
 
     public void updateLocation()    {setBounds(curX,curY,width,height);}
-    public void moveUp()            { curY +=10;}
-    public void moveDown()          { curY -=10;}
+    public void moveUp(){
+        Container p = parentFrame.getContentPane();
+        System.out.println("height"+getHeight()+" y= "+curY);
+        //when reach top, it wont appear on other side
+        if(curY > 0) {curY -=10;}
+        updateLocation();
+    }
+    public void moveDown(){
+        Container p = parentFrame.getContentPane();
+        //when reach bottom, it wont appear on other side
+        if(curY < p.getHeight()-getHeight()) {curY +=10;}
+        updateLocation();
+    }
     public void moveLeft(){
         Container p = getParent();
         curX -= 10;
@@ -233,11 +246,11 @@ class CharacterLabel extends BaseLabel implements MouseListener
     @Override
     public void mouseReleased(MouseEvent e) {}
 
-    //Jumps to a random location whenever the mouse enters the label’s bounds.
+    //Jumps to a random location whenever the mouse enters the label’s bounds.(if has wing)
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(horizontalMove){
-            Container p = getParent();
+        if(verticalMove){
+            Container p = parentFrame.getContentPane();
             Random random = new Random();
             if (p != null) {
                 int maxX = p.getWidth() - width;
@@ -246,7 +259,7 @@ class CharacterLabel extends BaseLabel implements MouseListener
                 curX = random.nextInt(maxX);
                 curY = random.nextInt(maxY);
 
-                setBounds(curX, curY, width, height);
+                updateLocation();
             }
         }
     }
@@ -305,16 +318,8 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
             other.switchCharacter(); //transform to ALT icon
             other.setMoveConditions(true,true);
             this.setMoveConditions(false,false);
-            this.setVisible(false);
+            this.setVisible(false); //hide wings
+            parentFrame.setTitle("Wings on "+other.getName());
         }
     }
-}
-
-//character with wings (crow or butterfly)
-class FlyingLabel extends CharacterLabel
-{
-    public FlyingLabel(String file1, String file2, int w, int h, MainApplication pf) {
-        super(file1, file2, w, h, pf);
-    }
-
 }
