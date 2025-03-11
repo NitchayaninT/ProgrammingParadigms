@@ -48,7 +48,8 @@ class MainApplication extends JFrame implements KeyListener
 	    charLabels[0] = new CharacterLabel(MyConstants.FILE_CH_1_MAIN, MyConstants.FILE_CH_1_ALT,
                                            chwidth, chheight, this);  //marmite (alt = crow)
         charLabels[0].setName("Marmite");        
-        charLabels[0].setMoveConditions(200, groundY, true, false); 
+        charLabels[0].setMoveConditions(200, groundY, true, false);
+        //charLabels[0].setBorder(BorderFactory.createLineBorder(Color.RED, 2)); // add boarder to marmite for debugging sake
         
         charLabels[1] = new CharacterLabel(MyConstants.FILE_CH_2_MAIN, MyConstants.FILE_CH_2_ALT, 
                                            chwidth, chheight, this); //butter (alt = butterfly)
@@ -64,9 +65,6 @@ class MainApplication extends JFrame implements KeyListener
         contentpane.add( charLabels[1] ); //butter
 
         addKeyListener(this);
-        addMouseListener(charLabels[0]);
-        addMouseListener(charLabels[1]);
-        addMouseMotionListener(itemLabel);
 	    repaint();
     }
     
@@ -124,21 +122,23 @@ class MainApplication extends JFrame implements KeyListener
     public void takeWingsOff()
     {
         Random rand = new Random();
-        int x = rand.nextInt(framewidth);
-        int y = rand.nextInt(frameheight);
+        int x = rand.nextInt(framewidth - chwidth);
+        int y = rand.nextInt(groundY);
         if (charLabels[0].getFlyable()){
             CharacterLabel marmite = charLabels[0];
             marmite.switchCharacter();
-            marmite.setMoveConditions(marmite.curX,this.getY()-marmite.getHeight(),true,false);
+            marmite.setMoveConditions(marmite.curX,groundY,true,false);
             itemLabel.setMoveConditions(x,y,true,true);
             itemLabel.setVisible(true);
+            itemLabel.enableWing();
         }
         else if (charLabels[1].getFlyable()){
             CharacterLabel butter = charLabels[1];
             butter.switchCharacter();
-            butter.setMoveConditions(butter.curX,this.getY()-butter.getHeight(),true,false);
+            butter.setMoveConditions(butter.curX,MyConstants.GROUND_Y,true,false);
             itemLabel.setMoveConditions(x,y,true,true);
             itemLabel.setVisible(true);
+            itemLabel.enableWing();
         }
         setTitle("Wings off");
     }
@@ -197,20 +197,20 @@ class CharacterLabel extends BaseLabel implements MouseListener
     public CharacterLabel(String file1, String file2, int w, int h, MainApplication pf)				
     { 
         super(file1, file2, w, h, pf);
+        addMouseListener(this);
     }
 
     public void updateLocation()    {setBounds(curX,curY,width,height);}
     public void moveUp(){
         Container p = parentFrame.getContentPane();
-        System.out.println("height"+getHeight()+" y= "+curY);
         //when reach top, it wont appear on other side
         if(curY > 0) {curY -=10;}
         updateLocation();
     }
     public void moveDown(){
-        Container p = parentFrame.getContentPane();
+        //Container p = parentFrame.getContentPane();
         //when reach bottom, it wont appear on other side
-        if(curY < p.getHeight()-getHeight()) {curY +=10;}
+        if(curY < MyConstants.GROUND_Y) {curY +=10;}
         updateLocation();
     }
     public void moveLeft(){
@@ -254,10 +254,9 @@ class CharacterLabel extends BaseLabel implements MouseListener
             Random random = new Random();
             if (p != null) {
                 int maxX = p.getWidth() - width;
-                int maxY = p.getHeight() - height;
 
                 curX = random.nextInt(maxX);
-                curY = random.nextInt(maxY);
+                curY = random.nextInt(MyConstants.GROUND_Y);
 
                 updateLocation();
             }
@@ -276,24 +275,30 @@ class CharacterLabel extends BaseLabel implements MouseListener
 /// wings (itemLabel)
 class ItemLabel extends BaseLabel implements MouseMotionListener //because you need to drag item around
 {
-    public ItemLabel(String file, int w, int h, MainApplication pf)				
-    { 
+    private boolean combined = false; // use to check if it is already combined or not?
+
+    public ItemLabel(String file, int w, int h, MainApplication pf)
+    {
         super(file, null, w, h, pf);
-    }   
+        addMouseMotionListener(this);
+    }
 
     public void updateLocation()    {setBounds(curX,curY,width,height);}
 
+    public void enableWing(){
+        combined = false;
+    }
     @Override
     public void mouseDragged(MouseEvent e) {
         //previous location plus x and y locations
-        System.out.println(e.getX());
-        curX = e.getX() - getHeight();
-        curY = e.getY() - getWidth();
+        curX = curX + e.getX();
+        curY = curY + e.getY();
 
         //update the location to follow the cursor
         Container p = getParent();
+
         if (curX < 0)  curX = 0; //dragged within the frame
-        if (curY < 0)  curY = 0; //dragged within the frame
+        if (curY > MyConstants.GROUND_Y)  curY = MyConstants.GROUND_Y; //dragged within the frame
         if (curX + width  > p.getWidth())   curX = p.getWidth() - width; //move within the bounds
         if (curY + height > p.getHeight())  curY = p.getHeight() - height;
 
@@ -312,14 +317,17 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
 //method to check collision between wing and any icon (needs to check which icon it collides first)
     public void checkCollision(CharacterLabel other)
     {
-        Container p = getParent();
-        if ( this.getBounds().intersects(other.getBounds()) )
-        {
-            other.switchCharacter(); //transform to ALT icon
-            other.setMoveConditions(true,true);
-            this.setMoveConditions(false,false);
-            this.setVisible(false); //hide wings
-            parentFrame.setTitle("Wings on "+other.getName());
+        if(!combined){
+            Container p = getParent();
+            if ( this.getBounds().intersects(other.getBounds()) )
+            {
+                other.switchCharacter(); //transform to ALT icon
+                other.setMoveConditions(true,true);
+                this.setMoveConditions(false,false);
+                this.setVisible(false); //hide wings
+                parentFrame.setTitle("Wings on "+ other.getName());
+                combined = true;
+            }
         }
     }
 }
