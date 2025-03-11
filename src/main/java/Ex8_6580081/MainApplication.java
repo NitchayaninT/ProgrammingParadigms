@@ -25,7 +25,7 @@ class MainApplication extends JFrame implements KeyListener
 
     public static void main(String[] args) 
     {
-	new MainApplication();
+	    new MainApplication();
     }	    
     
     public MainApplication()
@@ -62,6 +62,11 @@ class MainApplication extends JFrame implements KeyListener
         contentpane.add( itemLabel ); //wing
         contentpane.add( charLabels[0] ); //marmite
         contentpane.add( charLabels[1] ); //butter
+
+        addKeyListener(this);
+        addMouseListener(charLabels[0]);
+        addMouseListener(charLabels[1]);
+        addMouseMotionListener(itemLabel);
 	    repaint();
     }
     
@@ -282,7 +287,6 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
                 checkCollision((CharacterLabel) c);
             }
         }
-
         updateLocation();
     }
 
@@ -296,7 +300,6 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
         if ( this.getBounds().intersects(other.getBounds()) )
         {
             other.switchCharacter(); //transform to ALT icon
-            p.remove(iconMain);
             //this.doSomething();
         }
     }
