@@ -8,10 +8,10 @@ import javax.swing.ImageIcon;
 interface MyConstants
 {
     //----- Resource files
-    static final String PATH           = "src/main/java/Ex8Sol/resources/";
+    static final String PATH           = "src/main/java/Ex8_6580081/resources/";
     static final String FILE_BG        = PATH + "background.jpg";
     static final String FILE_CH_1_MAIN = PATH + "marmite.png";
-    static final String FILE_CH_1_ALT  = PATH + "crow.png";    
+    static final String FILE_CH_1_ALT  = PATH + "crow.png";
     static final String FILE_CH_2_MAIN = PATH + "butter.png";
     static final String FILE_CH_2_ALT  = PATH + "butterfly.png";
     static final String FILE_ITEM      = PATH + "wing.png";    
@@ -36,8 +36,8 @@ class MyImageIcon extends ImageIcon
 
     public MyImageIcon resize(int width, int height)
     {
-	Image oldimg = this.getImage();
-	Image newimg = oldimg.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+        Image oldimg = this.getImage();
+        Image newimg = oldimg.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
         return new MyImageIcon(newimg);
     }
 }

@@ -64,7 +64,9 @@ class MyButton extends JButton implements MouseListener, MouseMotionListener
 //still have to write them, because they are abstract methods (need to override)
     public void mousePressed( MouseEvent e )	{ }
     public void mouseReleased( MouseEvent e )	{ }
-    public void mouseEntered( MouseEvent e )	{ }	
+    public void mouseEntered( MouseEvent e )	{
+        System.out.println("hello world");
+    }
     public void mouseExited( MouseEvent e )	{ }
     public void mouseMoved( MouseEvent e )	{ }
 
@@ -99,13 +101,11 @@ class MyButton extends JButton implements MouseListener, MouseMotionListener
                 curY = curY + e.getY();
             //update the location to follow the cursor
                 // ----- (4) bound for dragging
-
                 Container p = getParent();
                 if (curX < 0)  curX = 0;
                 if (curY < 0)  curY = 0;
                 if (curX + width  > p.getWidth())   curX = p.getWidth() - width;
                 if (curY + height > p.getHeight())  curY = p.getHeight() - height;
-
 
                 setLocation(curX, curY); //to follow the location of the cursor
             }
