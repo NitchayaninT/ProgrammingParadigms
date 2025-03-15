@@ -99,13 +99,13 @@ class MyButton extends JButton implements MouseListener, MouseMotionListener
                 curY = curY + e.getY();
             //update the location to follow the cursor
                 // ----- (4) bound for dragging
-                /*
+
                 Container p = getParent();
                 if (curX < 0)  curX = 0;
                 if (curY < 0)  curY = 0;
                 if (curX + width  > p.getWidth())   curX = p.getWidth() - width;
                 if (curY + height > p.getHeight())  curY = p.getHeight() - height;
-                */
+
 
                 setLocation(curX, curY); //to follow the location of the cursor
             }
