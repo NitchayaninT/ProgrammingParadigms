@@ -2,6 +2,7 @@
 //Nitchayanin Thamkunanon 6580081
 package Ex9_6580081;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -78,7 +79,8 @@ class MainApplication extends JFrame
         moveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                zombieLabel.setMove(true);
+                setZombieThread();
             }
         });
         
@@ -88,7 +90,7 @@ class MainApplication extends JFrame
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                zombieLabel.setMove(false);
             }
         });
         
@@ -100,29 +102,54 @@ class MainApplication extends JFrame
         combo.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+                String selected = (String) e.getItem();
+                int sleepTime = 10000;
+                switch (selected){
+                    case "fast" :
+                        sleepTime = 250;
+                        break;
 
+                    case "medium" :
+                        sleepTime = 500;
+                        break;
+
+                    case "slow" :
+                        sleepTime = 1000;
+                        break;
+                    default:
+                        System.err.println("Error @speed comboBox");
+                        System.exit(-1);
+                }
+                zombieLabel.setSpeed(sleepTime);
             }
         });
 
-        
+
 	// (5) Add ItemListener (anonymouse class) to tb[i]
         //     - Make Zombie turn left/right
         //     - Only 1 of them can be selected at a time
         tb = new JToggleButton[2];
-        bgroup = new ButtonGroup();      
+        bgroup = new ButtonGroup();
         tb[0] = new JRadioButton("Left");   tb[0].setName("Left");
-        tb[1] = new JRadioButton("Right");  tb[1].setName("Right"); 
+        tb[1] = new JRadioButton("Right");  tb[1].setName("Right");
 	    tb[1].setSelected(true);
+
+        // add the Radio buttons to the group to make it selected one @ a time
+        bgroup.add(tb[0]);
+        bgroup.add(tb[1]);
         for(int i=0;i<tb.length;i++)
         {
             tb[i].addItemListener(new ItemListener() {
                 @Override
                 public void itemStateChanged(ItemEvent e) {
-
+                    if(tb[0].isSelected())
+                        zombieLabel.turnLeft();
+                    else
+                        zombieLabel.turnRight();
                 }
             });
         }
-  
+
         
         // (6) Add ActionListener (anonymous class) to squashButton
         //     - Create a new itemThread with Squash label
@@ -162,9 +189,9 @@ class MainApplication extends JFrame
         control.add(new JLabel("Score : "));
         control.add(scoreText);
         contentpane.add(control, BorderLayout.NORTH);
-        contentpane.add(drawpane, BorderLayout.CENTER);     
-        
-        validate();       
+        contentpane.add(drawpane, BorderLayout.CENTER);
+
+        validate();
     }    
 
     //--------------------------------------------------------------------------
@@ -173,10 +200,10 @@ class MainApplication extends JFrame
         Thread zombieThread = new Thread() {
             public void run()
             {
-                while (zombieLabel.isMove())
-                {
+                while(zombieLabel.isMove()) {
                     zombieLabel.updateLocation();
-                }          
+                }
+                System.out.println("ZombieThread running");
             } // end run
         }; // end thread creation
         zombieThread.start();
@@ -274,6 +301,7 @@ class ZombieLabel extends JLabel
             }			
         }
         setLocation(curX, curY);
+        System.out.println("2");
         repaint();             
         try { Thread.sleep(speed); } 
         catch (InterruptedException e) { e.printStackTrace(); }            

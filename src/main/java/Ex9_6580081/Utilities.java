@@ -9,7 +9,7 @@ import javax.sound.sampled.*;     // for sounds
 interface MyConstants
 {
     //----- Resource files
-    static final String PATH               = "src/main/java/Ex9/resources/";
+    static final String PATH               = "src/main/java/Ex9_6580081/resources/";
     static final String FILE_BG            = PATH + "background_mall.jpg";
     static final String FILE_ZOMBIE_LEFT   = PATH + "zombie_left.png";
     static final String FILE_ZOMBIE_RIGHT  = PATH + "zombie_right.png";
