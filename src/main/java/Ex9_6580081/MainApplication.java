@@ -250,40 +250,35 @@ class MainApplication extends JFrame
                     //push Zombie down to lower floor
                     if(collide)
                     {
-                        if(zombieLabel.getY() == MyConstants.FLOOR_UP)
-                        {
-                            zombieLabel.hit();
-                            zombieLabel.updateLocation();
-                        }
                         //Once colliding with Zombie,
                         //remove item from drawpane and end this thread
                         hit = true;
                         drawpane.remove(item);
-
-                    }
-                    else
-                    {
-                        //Once reaching the top/bottom ,
-                        //remove item from drawpane and end this thread
-                        switch(type){
-                            case 0: //reach bottom
-                                if(item.getY()==drawpane.getY())
-                                {
-                                    drawpane.remove(item);
-                                    revalidate();
-                                    hit = true;
-                                }
-                                break;
-                            case 1: //reach top
-                                if(item.getY()==0)
-                                {
-                                    drawpane.remove(item);
-                                    revalidate();
-                                    hit = true;
-                                }
-                                break;
+                        if(zombieLabel.getY() == MyConstants.FLOOR_UP && type == 0)
+                        {
+                            zombieLabel.hit();
                         }
                     }
+                    //Once reaching the top/bottom ,
+                    //remove item from drawpane and end this thread
+                    switch(type){
+                        case 0: //reach bottom
+                            if(item.getY()==drawpane.getY())
+                            {
+                                drawpane.remove(item);
+                                hit = true;
+                            }
+                            break;
+                        case 1: //reach top
+                            if(item.getY()==0)
+                            {
+                                drawpane.remove(item);
+                                hit = true;
+                            }
+                            break;
+                    }
+                    validate();
+                    repaint();
                     try {
                         Thread.sleep(30); // Smooth movement
                     } catch (InterruptedException e) {}
@@ -313,6 +308,7 @@ class MainApplication extends JFrame
     {
         score += hp;
         System.out.println("Updated Score: " + score);
+        scoreText.setText(String.valueOf(score));
     }
     //method to check collision
     public boolean checkCollision(ZombieLabel other, ItemLabel item) {
@@ -359,33 +355,43 @@ class ZombieLabel extends JLabel
     public void turnRight()         { setIcon(rightImg); right = true; }
     public void setMove(boolean m)  { move = m; }
     public boolean isMove()         { return move; }
-    public void hit()               { curY = MyConstants.FLOOR_DOWN;}
+    public void hit()               { curY = MyConstants.FLOOR_DOWN; setLocation(curX,curY);}
     // (10) Add code to switch between upper and lower floor when Zombie reaches 
     //      left/right border of the frame
     public void updateLocation()
     {
         if (!right)
-        {   
+        {
             curX = curX - 50;
-            if (curX < -80) 
-            { 
-                curX = parentFrame.getWidth(); 
-            } 			
+            if (curX < -80)
+            {
+                curX = parentFrame.getWidth();
+                if ( curY == MyConstants.FLOOR_UP){
+                    curY = MyConstants.FLOOR_DOWN;
+                }
+                else
+                    curY = MyConstants.FLOOR_UP;
+            }
         }
         else
         {
             curX = curX + 50;
-            if (curX > parentFrame.getWidth()) 
-            { 
-                curX = -40; 
-            }			
+            if (curX > parentFrame.getWidth())
+            {
+                curX = -40;
+                if(curY == MyConstants.FLOOR_UP){
+                    curY = MyConstants.FLOOR_DOWN;
+                }
+                else
+                    curY = MyConstants.FLOOR_UP;
+            }
         }
         setLocation(curX, curY);
         repaint();
-        try { Thread.sleep(speed); } 
-        catch (InterruptedException e) { e.printStackTrace(); }            
-    } 
-    
+        try { Thread.sleep(speed); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+    }
+
 } // end class ZombieLabel
 
 ////////////////////////////////////////////////////////////////////////////////
