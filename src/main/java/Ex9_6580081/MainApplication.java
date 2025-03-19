@@ -79,8 +79,10 @@ class MainApplication extends JFrame
         moveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                zombieLabel.setMove(true);
-                setZombieThread();
+                if(!zombieLabel.isMove()) {
+                    zombieLabel.setMove(true);
+                    setZombieThread();
+                }
             }
         });
         
@@ -154,10 +156,11 @@ class MainApplication extends JFrame
         // (6) Add ActionListener (anonymous class) to squashButton
         //     - Create a new itemThread with Squash label
 	    squashButton = new JButton("Squash");
-        stopButton.addActionListener(new ActionListener() {
+        squashButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setItemThread(0);
+                System.out.println("Squash pressed");
             }
         });
 
@@ -221,24 +224,24 @@ class MainApplication extends JFrame
                 ItemLabel item = new ItemLabel(currentFrame,type);
                 drawpane.add(item);
                 item.setVisible(true);
-                int Yaxis = 0; //initialize
+
+                int Yaxis = 0;
+                if(type == 1) Yaxis = contentpane.getHeight();//initialize
+                Random rand = new Random();
+                int Xaxis =  rand.nextInt(contentpane.getWidth() - MyConstants.ITEMWIDTH);
                 while(!hit)
                 {
-                    Random rand = new Random();
-                    int Xaxis =  rand.nextInt(contentpane.getWidth() - MyConstants.ITEMWIDTH);
                     //Update item location
                     switch(type){
                         case 0: //for squash
-                            item.setBounds(Xaxis,Yaxis,MyConstants.ITEMWIDTH,MyConstants.ITEMHEIGHT);
+                            item.setLocation(Xaxis,Yaxis);
                             Yaxis += 10;
                             break;
                         case 1: //for heart
-                            Yaxis = contentpane.getHeight();
-                            item.setBounds(Xaxis,Yaxis,MyConstants.ITEMWIDTH,MyConstants.ITEMHEIGHT);
+                            item.setLocation(Xaxis,Yaxis);
                             Yaxis -= 10;
                             break;
                     }
-                    System.out.println("Item Position: " + Xaxis + ", " + Yaxis);
 
                     // Check whether it collides with Zombie. If it does, play
                     // hit sound and update score
@@ -249,7 +252,8 @@ class MainApplication extends JFrame
                     {
                         if(zombieLabel.getY() == MyConstants.FLOOR_UP)
                         {
-                            zombieLabel.setBounds(zombieLabel.getX(),MyConstants.FLOOR_DOWN,MyConstants.ZOMBIEWIDTH,MyConstants.ZOMBIEHEIGHT);
+                            zombieLabel.hit();
+                            zombieLabel.updateLocation();
                         }
                         //Once colliding with Zombie,
                         //remove item from drawpane and end this thread
@@ -265,16 +269,16 @@ class MainApplication extends JFrame
                             case 0: //reach bottom
                                 if(item.getY()==drawpane.getY())
                                 {
-                                    System.out.println("here");
                                     drawpane.remove(item);
+                                    revalidate();
                                     hit = true;
                                 }
                                 break;
                             case 1: //reach top
                                 if(item.getY()==0)
                                 {
-                                    System.out.println("here2");
                                     drawpane.remove(item);
+                                    revalidate();
                                     hit = true;
                                 }
                                 break;
@@ -355,7 +359,7 @@ class ZombieLabel extends JLabel
     public void turnRight()         { setIcon(rightImg); right = true; }
     public void setMove(boolean m)  { move = m; }
     public boolean isMove()         { return move; }
-        
+    public void hit()               { curY = MyConstants.FLOOR_DOWN;}
     // (10) Add code to switch between upper and lower floor when Zombie reaches 
     //      left/right border of the frame
     public void updateLocation()
@@ -377,8 +381,7 @@ class ZombieLabel extends JLabel
             }			
         }
         setLocation(curX, curY);
-        System.out.println("2");
-        repaint();             
+        repaint();
         try { Thread.sleep(speed); } 
         catch (InterruptedException e) { e.printStackTrace(); }            
     } 
