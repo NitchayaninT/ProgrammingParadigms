@@ -184,7 +184,7 @@ class MainApplication extends JFrame
         control.add(tb[1]);
         control.add(new JLabel("             "));
         control.add(squashButton);
-            control.add(heartButton);
+        control.add(heartButton);
         control.add(new JLabel("             "));
         control.add(new JLabel("Score : "));
         control.add(scoreText);
@@ -212,16 +212,79 @@ class MainApplication extends JFrame
     public void setItemThread(int type)
     {
         Thread itemThread = new Thread() {
+            //if type squash, hp -1. if type heart, hp +1
+
             public void run()
             {
-                switch(type)
+
+                boolean hit = false;
+                ItemLabel item = new ItemLabel(currentFrame,type);
+                drawpane.add(item);
+                item.setVisible(true);
+                int Yaxis = 0; //initialize
+                while(!hit)
                 {
-                    case 0:
-                        //ItemLabel Squash = new ItemLabel()
-                        break;
-                    case 1:
-                        break;
+                    Random rand = new Random();
+                    int Xaxis =  rand.nextInt(contentpane.getWidth() - MyConstants.ITEMWIDTH);
+                    //Update item location
+                    switch(type){
+                        case 0: //for squash
+                            item.setBounds(Xaxis,Yaxis,MyConstants.ITEMWIDTH,MyConstants.ITEMHEIGHT);
+                            Yaxis += 10;
+                            break;
+                        case 1: //for heart
+                            Yaxis = contentpane.getHeight();
+                            item.setBounds(Xaxis,Yaxis,MyConstants.ITEMWIDTH,MyConstants.ITEMHEIGHT);
+                            Yaxis -= 10;
+                            break;
+                    }
+                    System.out.println("Item Position: " + Xaxis + ", " + Yaxis);
+
+                    // Check whether it collides with Zombie. If it does, play
+                    // hit sound and update score
+                    boolean collide = checkCollision(zombieLabel, item);
+                    //If Squash hits Zombie that stands/walks on upper floor,
+                    //push Zombie down to lower floor
+                    if(collide)
+                    {
+                        if(zombieLabel.getY() == MyConstants.FLOOR_UP)
+                        {
+                            zombieLabel.setBounds(zombieLabel.getX(),MyConstants.FLOOR_DOWN,MyConstants.ZOMBIEWIDTH,MyConstants.ZOMBIEHEIGHT);
+                        }
+                        //Once colliding with Zombie,
+                        //remove item from drawpane and end this thread
+                        hit = true;
+                        drawpane.remove(item);
+
+                    }
+                    else
+                    {
+                        //Once reaching the top/bottom ,
+                        //remove item from drawpane and end this thread
+                        switch(type){
+                            case 0: //reach bottom
+                                if(item.getY()==drawpane.getY())
+                                {
+                                    System.out.println("here");
+                                    drawpane.remove(item);
+                                    hit = true;
+                                }
+                                break;
+                            case 1: //reach top
+                                if(item.getY()==0)
+                                {
+                                    System.out.println("here2");
+                                    drawpane.remove(item);
+                                    hit = true;
+                                }
+                                break;
+                        }
+                    }
+                    try {
+                        Thread.sleep(30); // Smooth movement
+                    } catch (InterruptedException e) {}
                 }
+                //update score
                 // (8) Create a new ItemLabel with type 0 (Squash) or 1 (Heart), 
                 //     add it to drawpane, and do the following tasks in loop:
                 //     - Update item location 
@@ -234,18 +297,31 @@ class MainApplication extends JFrame
                 //
                 //     - Once reaching the top/bottom or colliding with Zombie, 
                 //       remove item from drawpane and end this thread
-                
+
             } // end run
         }; // end thread creation
         itemThread.start();
+
     }
     //--------------------------------------------------------------------------
-    public void updateScore(int hp)
+    // (9) Score update must be synchronized since it can be done by >1 itemThreads
+    public synchronized void updateScore(int hp)
     {
-        // (9) Score update must be synchronized since it can be done by >1 itemThreads
+        score += hp;
+        System.out.println("Updated Score: " + score);
+    }
+    //method to check collision
+    public boolean checkCollision(ZombieLabel other, ItemLabel item) {
+        //zombie Label collies with ItemLabel
+        if (item.getBounds().intersects(other.getBounds())) {
+            //play hit sounds and update score
+            item.playHitSound();
+            updateScore(item.getHitPoints());
+            return true; //collides!
+        }
+        else return false;
+    }
 
-    }  
-    
 } // end class MainApplication
 
 
