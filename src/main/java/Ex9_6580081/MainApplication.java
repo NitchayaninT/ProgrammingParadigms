@@ -36,51 +36,73 @@ class MainApplication extends JFrame
     public MainApplication()
     {   
         setTitle("Zombie Game");
-	setSize(framewidth, frameheight); 
+	    setSize(framewidth, frameheight);
         setLocationRelativeTo(null);
-	setVisible(true);
-	setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
+	    setVisible(true);
+	    setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
         currentFrame = this;
 
         // (1) Add WindowListener (anonymous class)
         //     - Stop everything. Show total score
+        currentFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                //show total score. first parameter is current frame for dialog to attach to
+                JOptionPane.showMessageDialog(currentFrame, "Game Over!\nYour total score: " + score, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            }
+        });
 
-
-	contentpane = (JPanel)getContentPane();
-	contentpane.setLayout( new BorderLayout() );        
+        contentpane = (JPanel)getContentPane();
+        contentpane.setLayout( new BorderLayout() );
         AddComponents();
     } 
     
     //--------------------------------------------------------------------------
     public void AddComponents()
     {        
-	backgroundImg  = new MyImageIcon(MyConstants.FILE_BG).resize(framewidth, frameheight-80);
-	drawpane = new JLabel();
-	drawpane.setIcon(backgroundImg);
+        backgroundImg  = new MyImageIcon(MyConstants.FILE_BG).resize(framewidth, frameheight-80);
+        drawpane = new JLabel();
+        drawpane.setIcon(backgroundImg);
         drawpane.setLayout(null);
 
-	themeSound = new MySoundEffect(MyConstants.FILE_THEME); 
+	    themeSound = new MySoundEffect(MyConstants.FILE_THEME);
         themeSound.playLoop(); themeSound.setVolume(0.4f);
         
         zombieLabel = new ZombieLabel(currentFrame);
         drawpane.add(zombieLabel);
         
-        
         // (2) Add ActionListener (anonymous class) to moveButton
         //     - If Zombie isn't moving, create zombieThread to make it move
-	moveButton = new JButton("Move");
-            
+	    moveButton = new JButton("Move");
+        moveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         
         // (3) Add ActionListener (anonymous class) to stopButton
         //     - Stop zombieThread, i.e. make it return from method run
-	stopButton = new JButton("Stop");
-   
+	    stopButton = new JButton("Stop");
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         
 	// (4) Add ItemListener (anonymouse class) to combo 
         //     - Set Zombie's speed, i.e. sleeping time for zombieThread
         String[] speed = { "fast", "medium", "slow"};
         combo = new JComboBox(speed);
-	combo.setSelectedIndex(1);
+	    combo.setSelectedIndex(1);
+        combo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+            }
+        });
 
         
 	// (5) Add ItemListener (anonymouse class) to tb[i]
@@ -90,36 +112,55 @@ class MainApplication extends JFrame
         bgroup = new ButtonGroup();      
         tb[0] = new JRadioButton("Left");   tb[0].setName("Left");
         tb[1] = new JRadioButton("Right");  tb[1].setName("Right"); 
-	tb[1].setSelected(true);
+	    tb[1].setSelected(true);
+        for(int i=0;i<tb.length;i++)
+        {
+            tb[i].addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+
+                }
+            });
+        }
   
         
         // (6) Add ActionListener (anonymous class) to squashButton
         //     - Create a new itemThread with Squash label
-	squashButton = new JButton("Squash");
-
+	    squashButton = new JButton("Squash");
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setItemThread(0);
+            }
+        });
 
         // (7) Add ActionListener (anonymous class) to heartButton
         //     - Create a new itemThread with Heart label
-	heartButton = new JButton("Heart");
-     
+	    heartButton = new JButton("Heart");
+        heartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setItemThread(1);
+            }
+        });
 
-	scoreText = new JTextField("0", 5);		
-	scoreText.setEditable(false);
+        scoreText = new JTextField("0", 5);
+        scoreText.setEditable(false);
 
         JPanel control  = new JPanel();
         control.setBounds(0,0,1000,50);
-	control.add(new JLabel("Zombie : "));
+	    control.add(new JLabel("Zombie : "));
         control.add(moveButton);
         control.add(stopButton);
         control.add(combo);
         control.add(tb[0]);
         control.add(tb[1]);
-	control.add(new JLabel("             "));
-	control.add(squashButton);
-        control.add(heartButton);
-	control.add(new JLabel("             "));
-	control.add(new JLabel("Score : "));
-	control.add(scoreText);
+        control.add(new JLabel("             "));
+        control.add(squashButton);
+            control.add(heartButton);
+        control.add(new JLabel("             "));
+        control.add(new JLabel("Score : "));
+        control.add(scoreText);
         contentpane.add(control, BorderLayout.NORTH);
         contentpane.add(drawpane, BorderLayout.CENTER);     
         
@@ -146,6 +187,14 @@ class MainApplication extends JFrame
         Thread itemThread = new Thread() {
             public void run()
             {
+                switch(type)
+                {
+                    case 0:
+                        //ItemLabel Squash = new ItemLabel()
+                        break;
+                    case 1:
+                        break;
+                }
                 // (8) Create a new ItemLabel with type 0 (Squash) or 1 (Heart), 
                 //     add it to drawpane, and do the following tasks in loop:
                 //     - Update item location 

@@ -13,7 +13,7 @@ class MainApplication extends JFrame implements KeyListener
     private CharacterLabel  []charLabels;
     private CharacterLabel  flyingLabel;
     private ItemLabel       itemLabel;
-    
+
     private int framewidth   = MyConstants.FRAME_WIDTH;
     private int frameheight  = MyConstants.FRAME_HEIGHT;
     private int groundY      = MyConstants.GROUND_Y;
@@ -23,20 +23,20 @@ class MainApplication extends JFrame implements KeyListener
     private int itwidth      = MyConstants.IT_WIDTH;
     private int itheight     = MyConstants.IT_HEIGHT;
 
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
-	    new MainApplication();
-    }	    
-    
-    public MainApplication()
-    {      
-	    setSize(framewidth, frameheight);
-        setLocationRelativeTo(null);
-	    setVisible(true);
-        setTitle("Wings off");
-	    setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
+        new MainApplication();
+    }
 
-        
+    public MainApplication()
+    {
+        setSize(framewidth, frameheight);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setTitle("Wings off");
+        setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
+
+
         // set background image by using JLabel as contentpane
         setContentPane(contentpane = new JLabel());
         MyImageIcon background = new MyImageIcon(MyConstants.FILE_BG).resize(framewidth, frameheight);
@@ -45,17 +45,17 @@ class MainApplication extends JFrame implements KeyListener
 
         //charLabels keep marmite and butter
         charLabels    = new CharacterLabel[2];
-	    charLabels[0] = new CharacterLabel(MyConstants.FILE_CH_1_MAIN, MyConstants.FILE_CH_1_ALT,
-                                           chwidth, chheight, this);  //marmite (alt = crow)
-        charLabels[0].setName("Marmite");        
+        charLabels[0] = new CharacterLabel(MyConstants.FILE_CH_1_MAIN, MyConstants.FILE_CH_1_ALT,
+                chwidth, chheight, this);  //marmite (alt = crow)
+        charLabels[0].setName("Marmite");
         charLabels[0].setMoveConditions(200, groundY, true, false);
         //charLabels[0].setBorder(BorderFactory.createLineBorder(Color.RED, 2)); // add boarder to marmite for debugging sake
-        
-        charLabels[1] = new CharacterLabel(MyConstants.FILE_CH_2_MAIN, MyConstants.FILE_CH_2_ALT, 
-                                           chwidth, chheight, this); //butter (alt = butterfly)
-        charLabels[1].setName("Butter");        
+
+        charLabels[1] = new CharacterLabel(MyConstants.FILE_CH_2_MAIN, MyConstants.FILE_CH_2_ALT,
+                chwidth, chheight, this); //butter (alt = butterfly)
+        charLabels[1].setName("Butter");
         charLabels[1].setMoveConditions(500, groundY, true, false);
-                    
+
         itemLabel = new ItemLabel(MyConstants.FILE_ITEM, itwidth, itheight, this);
         itemLabel.setMoveConditions(200, skyY, true, true);//wing
 
@@ -65,11 +65,11 @@ class MainApplication extends JFrame implements KeyListener
         contentpane.add( charLabels[1] ); //butter
 
         addKeyListener(this);
-	    repaint();
+        repaint();
     }
-    
-    public CharacterLabel[] getAllCharLabels() { return charLabels; }    
-    public CharacterLabel   getFlyingLabel()   { return flyingLabel; }    
+
+    public CharacterLabel[] getAllCharLabels() { return charLabels; }
+    public CharacterLabel   getFlyingLabel()   { return flyingLabel; }
     public void setFlying(CharacterLabel cb)   { flyingLabel = cb; }
 
     //Triggers after you press and then "release" a key but only if the key produces a character
@@ -152,30 +152,30 @@ abstract class BaseLabel extends JLabel
     protected MyImageIcon      iconMain, iconAlt;
     protected int              curX, curY, width, height; //label position
     protected boolean          horizontalMove, verticalMove;
-    protected MainApplication  parentFrame;   
-    
+    protected MainApplication  parentFrame;
+
     public BaseLabel() { }
     public BaseLabel(String file1, String file2, int w, int h, MainApplication pf)	 //our label can switch between 2 modes (2 files,main and alt images)
-    { 
+    {
         width = w; height = h;
-        iconMain = new MyImageIcon(file1).resize(width, height);  
+        iconMain = new MyImageIcon(file1).resize(width, height);
         setIcon(iconMain);
         setHorizontalAlignment(JLabel.CENTER);
-        parentFrame = pf;  
-        
+        parentFrame = pf;
+
         if (file2 != null) iconAlt = new MyImageIcon(file2).resize(width, height);
         else               iconAlt = null;
     }
 
     public void setName(String n)   { name = n; }
     public String getName()         { return name; }
-    public void setMainIcon()       { setIcon(iconMain); }    
+    public void setMainIcon()       { setIcon(iconMain); }
     public void setAltIcon()        { setIcon(iconAlt); }
 
     //for takeWingsOff, butter and marmite have to be on the ground
     public void setMoveConditions(int x, int y, boolean hm, boolean vm)
     {
-        curX = x; curY = y; 
+        curX = x; curY = y;
         setBounds(curX, curY, width, height);
         setMoveConditions(hm, vm);
     }
@@ -184,8 +184,8 @@ abstract class BaseLabel extends JLabel
     {
         horizontalMove = hm; verticalMove = vm;
     }
-    
-    abstract public void updateLocation(); 
+
+    abstract public void updateLocation();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -193,9 +193,9 @@ abstract class BaseLabel extends JLabel
 //Marmite can move left/right by keys A/D, but can't move up/down
 //Butter can move left/right by arrow keys LEFT/RIGHT, but can't move up/down
 class CharacterLabel extends BaseLabel implements MouseListener
-{ 
-    public CharacterLabel(String file1, String file2, int w, int h, MainApplication pf)				
-    { 
+{
+    public CharacterLabel(String file1, String file2, int w, int h, MainApplication pf)
+    {
         super(file1, file2, w, h, pf);
         addMouseListener(this);
     }
@@ -254,7 +254,6 @@ class CharacterLabel extends BaseLabel implements MouseListener
             Random random = new Random();
             if (p != null) {
                 int maxX = p.getWidth() - width;
-
                 curX = random.nextInt(maxX);
                 curY = random.nextInt(MyConstants.GROUND_Y);
 
@@ -314,7 +313,7 @@ class ItemLabel extends BaseLabel implements MouseMotionListener //because you n
     @Override
     public void mouseMoved(MouseEvent e) {}
 
-//method to check collision between wing and any icon (needs to check which icon it collides first)
+    //method to check collision between wing and any icon (needs to check which icon it collides first)
     public void checkCollision(CharacterLabel other)
     {
         if(!combined){
