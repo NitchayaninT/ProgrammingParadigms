@@ -24,7 +24,7 @@ class w8_1_Container
         //useless to just change color of the frame cuz its behind content pane (top level container)
         frame.getContentPane().setBackground( Color.PINK );
         frame.setCursor( new Cursor(Cursor.WAIT_CURSOR) ); //set cursor to be wait cursor
-        frame.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
+        frame.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE ); // Proram exit on closed
 
         frame.getContentPane().setLayout(new FlowLayout());
         frame.getContentPane().add( new JTextField("type anything", 20) );//added text after the frame already apeared on the screen
@@ -66,6 +66,5 @@ class w8_1_Container
 	JOptionPane.showMessageDialog( frame, 
 		 ("Option  =  " + op), "This is a Message Dialog", 
 		 JOptionPane.INFORMATION_MESSAGE ); //frame as owner = appears at the center of the frame
-
     }
 }

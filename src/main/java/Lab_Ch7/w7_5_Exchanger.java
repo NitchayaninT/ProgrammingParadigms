@@ -33,7 +33,7 @@ class ExchangeThread extends Thread
         }
         
         // ----- (2) wait at the exchanger (implicit barrier), then exchange
-        try { yourValue = exchanger.exchange(myValue); }           
+        try { yourValue = exchanger.exchange(myValue); }
         catch(InterruptedException e) { }
         
         System.out.printf("Thread %s >> your value = %d, result = %d \n", 
